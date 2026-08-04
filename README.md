@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nextjs-prisma-clerk-with-skills
 
-## Getting Started
+A Next.js boilerplate pre-wired with [Prisma](https://prisma.io) (Postgres) and [Clerk](https://clerk.com) authentication, plus a set of agent skills (`.agents/`, `.claude/`, `.windsurf/`) for working with both in AI-assisted editors.
 
-First, run the development server:
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router)
+- [Prisma ORM 7](https://prisma.io) with a Postgres datasource
+- [Clerk](https://clerk.com) for authentication (`@clerk/nextjs`, middleware in `proxy.ts`)
+- Tailwind CSS 4
+- TypeScript
+
+## Getting started
+
+1. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+2. Copy `.env.example` to `.env` and fill in the values:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   - `DATABASE_URL` — a Postgres connection string. Run `npx create-db` to get a free hosted database in seconds.
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` — from your [Clerk dashboard](https://dashboard.clerk.com).
+
+3. Push the Prisma schema to your database:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+4. Run the development server:
+
+   ```bash
+   pnpm dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) to see the result.
+
+## Project structure
+
+- `app/` — Next.js App Router pages, including Clerk's `sign-in` / `sign-up` routes
+- `prisma/schema.prisma` — Prisma schema (Postgres datasource, client output at `app/generated/prisma`)
+- `proxy.ts` — Clerk middleware
+- `.agents/`, `.claude/`, `.windsurf/` — bundled agent skills for Prisma and Clerk workflows
+
+## Using this as a template
+
+This repo is meant to be cloned/forked as a starting point:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx degit matheus98g/nextjs-prisma-clerk-with-skills my-app
+cd my-app
+pnpm install
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Learn more
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Clerk Documentation](https://clerk.com/docs)
+- [Deploying to Vercel](https://nextjs.org/docs/app/building-your-application/deploying)
