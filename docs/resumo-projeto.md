@@ -1,27 +1,35 @@
 # PRD — Sistema de Gestão de Segurança do Trabalho
-**Versão:** 0.1 (rascunho inicial) · **Data:** 19/07/2026
+
+**Versão:** 0.2 · **Data:** 05/08/2026
 **Autores:** Nairo Sanches, Matheus Gollmann · **Especialista de domínio:** Abner Costa da Silva
+
+> **Alterações desta versão:** registrada como questão em aberto a decisão sobre autenticação Microsoft/LDAP na empresa piloto (ver seção 9, item 7). Para os primeiros testes — focados em validar as telas — o MVP segue apenas com login por e-mail e senha (RF-18), sem alteração de escopo.
 
 ---
 
 ## 1. Visão geral
 
 ### 1.1 Problema
+
 A gestão de segurança do trabalho na empresa é feita hoje com Microsoft Lists, que funciona apenas como captura de dados. A ferramenta não permite definir prazos, não gera ações a partir de não conformidades, não notifica responsáveis e torna o acompanhamento de pendências manual e trabalhoso. Não há suporte estruturado para investigação de acidentes, relatos de perigo ou quase-acidentes, e documentos obrigatórios (PGR, PCMSO) são produzidos fora do sistema.
 
 ### 1.2 Solução proposta
+
 Aplicação web dedicada e responsiva que transforma toda não conformidade ou ocorrência em uma **ação rastreável com responsável, prazo e evidência de encerramento**. O sistema centraliza checklists de inspeção, registro de ocorrências e gestão de ações corretivas, com visibilidade de pendências por setor e responsável.
 
 ### 1.3 Objetivos do MVP
+
 - Substituir o Microsoft Lists como ferramenta de checklists e inspeções.
 - Garantir que nenhuma não conformidade fique sem ação, responsável e prazo.
 - Reduzir o esforço manual de acompanhamento de pendências (hoje o maior gargalo).
 - Validar o produto na operação da CBT como case de sucesso para futura comercialização.
+- Nos primeiros testes com a empresa piloto, o foco é validar as telas e o fluxo — login por e-mail/senha é suficiente para essa etapa.
 
 ### 1.4 Fora de escopo do MVP (fases futuras)
+
 - Geração automática de PGR e PCMSO.
 - Integração com folha de pagamento (mudanças de setor × riscos associados).
-- Autenticação via LDAP corporativo (MVP usa login por e-mail/senha com domínio corporativo).
+- Autenticação via LDAP corporativo ou SSO via Microsoft Entra ID (MVP usa login por e-mail/senha com domínio corporativo). **Decisão sobre se e quando isso entra em escopo está em aberto — ver seção 9, item 7.**
 - Matriz completa de riscos ocupacionais (químicos, físicos, biológicos, de acidente).
 - Controle de acesso/ponto com biometria facial (catracas).
 - Módulo comercial multi-empresa (multi-tenancy completo).
@@ -30,11 +38,11 @@ Aplicação web dedicada e responsiva que transforma toda não conformidade ou o
 
 ## 2. Usuários e permissões
 
-| Papel | Descrição | Permissões principais |
-|---|---|---|
-| **Engenheiro de segurança** | Administrador do sistema | Cria/edita templates de checklist, configura setores e usuários, valida ou reabre ações, acessa todos os dashboards |
-| **Técnico de segurança** | Executor de campo | Executa inspeções, registra ocorrências, cria ações corretivas, acompanha pendências dos setores sob sua responsabilidade |
-| **Colaborador operacional** | Responsável por ações | Visualiza ações atribuídas a si, encerra ações com justificativa e foto, insere justificativas de não conformidade |
+| Papel                       | Descrição                | Permissões principais                                                                                                     |
+| --------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| **Engenheiro de segurança** | Administrador do sistema | Cria/edita templates de checklist, configura setores e usuários, valida ou reabre ações, acessa todos os dashboards       |
+| **Técnico de segurança**    | Executor de campo        | Executa inspeções, registra ocorrências, cria ações corretivas, acompanha pendências dos setores sob sua responsabilidade |
+| **Colaborador operacional** | Responsável por ações    | Visualiza ações atribuídas a si, encerra ações com justificativa e foto, insere justificativas de não conformidade        |
 
 Regras gerais: todo usuário pertence a um ou mais setores; a visibilidade de dados do colaborador operacional é restrita às suas próprias ações.
 
@@ -43,6 +51,7 @@ Regras gerais: todo usuário pertence a um ou mais setores; a visibilidade de da
 ## 3. Requisitos funcionais
 
 ### 3.1 Módulo de Checklists e Inspeções
+
 - **RF-01** — Engenheiro cria templates de checklist com itens agrupados por seção; cada item tem texto, tipo de resposta (Conforme / Não conforme / N.A.) e criticidade (baixa, média, alta).
 - **RF-02** — Técnico inicia uma inspeção a partir de um template, vinculada a um setor e data.
 - **RF-03** — Ao marcar um item como **Não conforme**, o sistema exige obrigatoriamente: descrição do problema, foto (câmera ou upload) e criação de uma ação corretiva (responsável + prazo).
@@ -50,11 +59,13 @@ Regras gerais: todo usuário pertence a um ou mais setores; a visibilidade de da
 - **RF-05** — Inspeções concluídas ficam disponíveis para consulta com histórico completo (quem respondeu, quando, evidências).
 
 ### 3.2 Módulo de Ocorrências
+
 - **RF-06** — Formulário único de registro com tipo: **Acidente**, **Quase-acidente** ou **Relato de perigo**. Campos: data, setor, descrição, envolvidos (opcional), medidas corretivas imediatas.
 - **RF-07** — Todo registro de ocorrência permite (e para acidentes, exige) a criação de uma ou mais ações corretivas.
 - **RF-08** — Ocorrências alimentam contadores por tipo e setor para futura visualização da Pirâmide de Bird (relação entre volume de desvios menores e probabilidade de acidentes graves).
 
 ### 3.3 Módulo de Ações Corretivas (núcleo do sistema)
+
 - **RF-09** — Ação corretiva contém: origem (item de inspeção ou ocorrência), descrição, setor, responsável, prazo, status (**Pendente → Em andamento → Encerrada → Validada** ou **Reaberta**), e evidências.
 - **RF-10** — Encerramento de ação exige justificativa textual e permite anexar foto de evidência.
 - **RF-11** — Engenheiro valida o encerramento ou reabre a ação com comentário; ação reaberta volta para a fila do responsável.
@@ -62,13 +73,15 @@ Regras gerais: todo usuário pertence a um ou mais setores; a visibilidade de da
 - **RF-13** — Ações vencidas ficam destacadas visualmente em todas as listagens.
 
 ### 3.4 Dashboard e relatórios
+
 - **RF-14** — Dashboard inicial por papel: engenheiro vê visão geral (ações por status, por setor, vencidas); técnico vê seus setores; operacional vê apenas suas ações.
 - **RF-15** — Filtros por setor, responsável, status, período e origem.
 - **RF-16** — Exportação de listagens em planilha (CSV/XLSX) para relatórios externos.
 
 ### 3.5 Administração
+
 - **RF-17** — CRUD de usuários (nome, e-mail, papel, setores) e de setores.
-- **RF-18** — Autenticação por e-mail e senha via Better Auth (self-hosted, sessões e usuários armazenados no banco Postgres do próprio projeto, hospedado no Supabase); recuperação de senha por e-mail. Arquitetura deve prever adição futura de SSO/LDAP via plugins do Better Auth.
+- **RF-18** — Autenticação por e-mail e senha via Better Auth (self-hosted, sessões e usuários armazenados no banco Postgres do próprio projeto, hospedado no Supabase); recuperação de senha por e-mail. Arquitetura deve prever adição futura de SSO/LDAP via plugins do Better Auth, mas essa adição **não está confirmada para o MVP** (ver seção 9, item 7).
 
 ---
 
@@ -133,14 +146,15 @@ A entidade **Ação** é o coração do sistema: inspeções e ocorrências conv
 
 ## 9. Riscos e questões em aberto
 
-| # | Questão | Dono | Status |
-|---|---|---|---|
-| 1 | Lista definitiva de campos do formulário de incidentes (validar com documentos do Abner) | Abner | Aberto |
-| 2 | Política de notificações: só e-mail no MVP ou também WhatsApp/push? | Nairo/Matheus | Aberto |
-| 3 | Quem pode criar ações "avulsas" (sem origem em inspeção/ocorrência)? | Abner | Aberto |
-| 4 | Formalização do contrato de parceria (divisão 50/50, propriedade do código, uso do case CBT) | Todos | Aberto |
-| 5 | LGPD: fotos podem conter pessoas identificáveis — definir política de retenção e consentimento | Todos | Aberto |
-| 6 | Stack tecnológica: Next.js + Prisma (Postgres via Supabase) + Better Auth definidos; demais escolhas seguem a definir | Nairo/Matheus | Em andamento |
+| #   | Questão                                                                                                                                                                                                                                                             | Dono          | Status       |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------ |
+| 1   | Lista definitiva de campos do formulário de incidentes (validar com documentos do Abner)                                                                                                                                                                            | Abner         | Aberto       |
+| 2   | Política de notificações: só e-mail no MVP ou também WhatsApp/push?                                                                                                                                                                                                 | Nairo/Matheus | Aberto       |
+| 3   | Quem pode criar ações "avulsas" (sem origem em inspeção/ocorrência)?                                                                                                                                                                                                | Abner         | Aberto       |
+| 4   | Formalização do contrato de parceria (divisão 50/50, propriedade do código, uso do case CBT)                                                                                                                                                                        | Todos         | Aberto       |
+| 5   | LGPD: fotos podem conter pessoas identificáveis — definir política de retenção e consentimento                                                                                                                                                                      | Todos         | Aberto       |
+| 6   | Stack tecnológica: Next.js + Prisma (Postgres via Supabase) + Better Auth definidos; demais escolhas seguem a definir                                                                                                                                               | Nairo/Matheus | Em andamento |
+| 7   | Autenticação Microsoft/LDAP: empresa piloto usa AD on-premises sincronizado com Microsoft Entra ID. Decisão de adotar SSO via Entra ID (ou integração com o AD) ainda não tomada — os primeiros testes, focados em validar as telas, seguem apenas com e-mail/senha | Nairo/Matheus | Aberto       |
 
 ---
 
@@ -148,6 +162,6 @@ A entidade **Ação** é o coração do sistema: inspeções e ocorrências conv
 
 - **Fase 0 (atual):** PRD, mapeamento de fluxo, protótipos de tela, apresentação ao Abner.
 - **Fase 1 (MVP):** módulos de checklist, ocorrências, ações e dashboard; piloto na CBT.
-- **Fase 2:** Pirâmide de Bird visual, relatórios avançados, SSO/LDAP, gestão de riscos ocupacionais.
+- **Fase 2:** Pirâmide de Bird visual, relatórios avançados, SSO/LDAP (a definir, ver seção 9), gestão de riscos ocupacionais.
 - **Fase 3:** geração de PGR/PCMSO, integração com folha, preparação multi-tenant para comercialização.
 - **Fase 4 (exploratório):** controle de ponto/acesso com biometria facial.
