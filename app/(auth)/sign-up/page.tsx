@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { PASSWORD_RULES, PasswordChecklist } from "@/components/password-checklist";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EMAIL_CHECK_DEBOUNCE_MS = 500;
@@ -19,9 +20,25 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [emailStatus, setEmailStatus] = useState<EmailStatus>("idle");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(false);
+
+  useEffect(() => {
+    if (!confirmPassword) {
+      startTransition(() => setPasswordsMatch(true));
+      return;
+    }
+
+    startTransition(() => setPasswordsMatch(password === confirmPassword));
+  }, [password, confirmPassword]);
+
+  useEffect(() => {
+    startTransition(() => setPasswordValid(PASSWORD_RULES.every((rule) => rule.test(password))));
+  }, [password]);
 
   useEffect(() => {
     const trimmedEmail = email.trim();
@@ -67,6 +84,16 @@ export default function SignUpPage() {
 
     if (emailStatus === "taken") {
       setError("Este e-mail já está cadastrado.");
+      return;
+    }
+
+    if (!passwordValid) {
+      setError("A senha não atende aos requisitos mínimos.");
+      return;
+    }
+
+    if (!passwordsMatch) {
+      setError("As senhas não coincidem.");
       return;
     }
 
@@ -133,8 +160,33 @@ export default function SignUpPage() {
           minLength={8}
           required
         />
+        {password && <PasswordChecklist password={password} />}
       </div>
-      <Button type="submit" className="w-full" disabled={loading || emailStatus === "taken"}>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="confirmPassword">Confirmar senha</Label>
+        <Input
+          id="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          aria-invalid={!passwordsMatch}
+          aria-describedby="confirm-password-status"
+          minLength={8}
+          required
+        />
+        {!passwordsMatch && (
+          <ViewTransition enter="fade-in" exit="fade-out">
+            <p id="confirm-password-status" className="text-sm text-destructive">
+              As senhas não coincidem.
+            </p>
+          </ViewTransition>
+        )}
+      </div>
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={loading || emailStatus === "taken" || !passwordsMatch || !passwordValid}
+      >
         {loading ? "Criando conta..." : "Criar conta"}
       </Button>
       <p className="text-center text-sm text-muted-foreground">
