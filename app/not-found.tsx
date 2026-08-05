@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { ConstructionIcon, LayoutDashboardIcon, LifeBuoyIcon } from "lucide-react";
+import {
+  ConstructionIcon,
+  LayoutDashboardIcon,
+  LifeBuoyIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
@@ -20,7 +24,10 @@ export default function NotFound() {
             className="absolute inset-2 animate-spin rounded-full border border-dashed border-border"
             style={{ animationDuration: "20s" }}
           />
-          <ConstructionIcon className="size-20 text-destructive" strokeWidth={1.5} />
+          <ConstructionIcon
+            className="size-20 text-destructive"
+            strokeWidth={1.5}
+          />
           <div className="absolute -right-2 -bottom-2 rounded-full border-2 border-muted bg-destructive px-3 py-1 text-xs font-bold tracking-wide text-destructive-foreground uppercase shadow-md">
             Erro 404
           </div>
@@ -30,16 +37,23 @@ export default function NotFound() {
           Ops! Saiu da Rota de Segurança?
         </h1>
         <p className="mb-8 max-w-lg text-lg text-muted-foreground">
-          A página que você está tentando acessar não foi encontrada. O link pode estar quebrado, ou a página foi removida do sistema.
+          A página que você está tentando acessar não foi encontrada. O link
+          pode estar quebrado, ou a página foi removida.
         </p>
 
         <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
-          <Button render={<Link href="/dashboard" />} size="lg" className="w-full sm:w-auto">
+          <Button
+            render={<Link href="/dashboard" />}
+            nativeButton={false}
+            size="lg"
+            className="w-full sm:w-auto"
+          >
             <LayoutDashboardIcon />
             Voltar ao Dashboard
           </Button>
           <Button
             render={<Link href="/suporte" />}
+            nativeButton={false}
             variant="outline"
             size="lg"
             className="w-full sm:w-auto"
