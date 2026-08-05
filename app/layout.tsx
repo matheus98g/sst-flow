@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,6 +10,12 @@ const inter = Inter({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin"],
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}

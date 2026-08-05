@@ -1,4 +1,5 @@
 import * as React from "react"
+import { AlertCircle, AlertTriangle, Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -12,11 +13,46 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 has-data-[slot=card-status-band]:pt-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
         className
       )}
       {...props}
     />
+  )
+}
+
+const cardStatusBandClasses = {
+  success: "bg-success text-success-foreground",
+  warning: "bg-warning text-warning-foreground",
+  danger: "bg-destructive text-destructive-foreground",
+} as const
+
+const cardStatusBandIcons = {
+  success: Check,
+  warning: AlertTriangle,
+  danger: AlertCircle,
+} as const
+
+function CardStatusBand({
+  className,
+  status,
+  children,
+  ...props
+}: React.ComponentProps<"div"> & { status: keyof typeof cardStatusBandClasses }) {
+  const Icon = cardStatusBandIcons[status]
+  return (
+    <div
+      data-slot="card-status-band"
+      className={cn(
+        "flex items-center gap-1.5 rounded-t-xl px-(--card-spacing) py-2 text-[11px] font-bold tracking-wide uppercase [&_svg]:size-3.5 [&_svg]:shrink-0",
+        cardStatusBandClasses[status],
+        className
+      )}
+      {...props}
+    >
+      <Icon />
+      {children}
+    </div>
   )
 }
 
@@ -100,4 +136,5 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+  CardStatusBand,
 }
