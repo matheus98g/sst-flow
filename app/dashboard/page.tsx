@@ -2,18 +2,51 @@ import { CheckCircleIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const kpis = [
-  { label: "Ações vencidas", value: 0, rail: "bg-destructive", text: "text-destructive" },
+  {
+    label: "Ações vencidas",
+    value: 0,
+    rail: "bg-destructive",
+    text: "text-destructive",
+  },
   { label: "Pendentes", value: 0, rail: "bg-warning", text: "text-warning" },
-  { label: "Aguardando validação", value: 0, rail: "bg-primary", text: "text-primary" },
-  { label: "Validadas no mês", value: 0, rail: "bg-success", text: "text-success" },
+  {
+    label: "Aguardando validação",
+    value: 0,
+    rail: "bg-primary",
+    text: "text-primary",
+  },
+  {
+    label: "Validadas no mês",
+    value: 0,
+    rail: "bg-success",
+    text: "text-success",
+  },
 ];
 
 // Bands of a single triangle (apex at 50,0; base corners at 0,100 / 100,100),
 // so edges line up continuously instead of being clipped per-tier.
 const pyramidTiers = [
-  { label: "Acidentes", value: 1, points: "50,0 65,30 35,30", fill: "fill-destructive", labelPos: { x: 50, y: 22 } },
-  { label: "Quase acidentes", value: 5, points: "35,30 65,30 80,60 20,60", fill: "fill-warning", labelPos: { x: 50, y: 48 } },
-  { label: "Relatos de risco", value: 14, points: "20,60 80,60 100,100 0,100", fill: "fill-success", labelPos: { x: 50, y: 83 } },
+  {
+    label: "Acidentes",
+    value: 1,
+    points: "50,0 65,30 35,30",
+    fill: "fill-destructive",
+    labelPos: { x: 50, y: 22 },
+  },
+  {
+    label: "Quase acidentes",
+    value: 5,
+    points: "35,30 65,30 80,60 20,60",
+    fill: "fill-warning",
+    labelPos: { x: 50, y: 48 },
+  },
+  {
+    label: "Relatos de risco",
+    value: 14,
+    points: "20,60 80,60 100,100 0,100",
+    fill: "fill-success",
+    labelPos: { x: 50, y: 83 },
+  },
 ];
 
 export default function DashboardPage() {
@@ -46,8 +79,8 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:h-[400px] lg:grid-cols-3">
-        <Card className="gap-0 lg:col-span-2">
+      <div className="grid grid-cols-1 gap-4 lg:h-100 lg:grid-cols-3">
+        <Card className="gap-0 pt-0 lg:col-span-2">
           <CardHeader className="flex-row items-center justify-between rounded-t-xl bg-primary py-3">
             <CardTitle className="text-lg text-primary-foreground uppercase">
               Ações Críticas
@@ -84,7 +117,11 @@ export default function DashboardPage() {
               aria-label="Pirâmide de Bird"
             >
               {pyramidTiers.map((tier) => (
-                <polygon key={tier.label} points={tier.points} className={tier.fill} />
+                <polygon
+                  key={tier.label}
+                  points={tier.points}
+                  className={tier.fill}
+                />
               ))}
               {pyramidTiers.map((tier) => (
                 <text
