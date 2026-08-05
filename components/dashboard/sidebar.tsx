@@ -16,10 +16,10 @@ import { SignOutItem } from "@/components/dashboard/sign-out-item";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboardIcon },
-  { label: "Inspeções", href: "#", icon: ClipboardCheckIcon },
-  { label: "Ocorrências", href: "#", icon: AlertTriangleIcon },
-  { label: "Ações Corretivas", href: "#", icon: SquareCheckIcon },
-  { label: "Admin", href: "#", icon: ShieldCheckIcon },
+  { label: "Inspeções", href: "/dashboard/inspecoes", icon: ClipboardCheckIcon },
+  { label: "Ocorrências", href: "/dashboard/ocorrencias", icon: AlertTriangleIcon },
+  { label: "Ações Corretivas", href: "/dashboard/acoes-corretivas", icon: SquareCheckIcon },
+  { label: "Admin", href: "/dashboard/admin", icon: ShieldCheckIcon },
 ];
 
 const navItemClass =
