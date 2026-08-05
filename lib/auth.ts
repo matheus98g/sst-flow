@@ -23,6 +23,9 @@ export const auth = betterAuth({
     },
   },
   plugins: [nextCookies()],
+  // baseURL: {
+  //   allowedHosts: ["*.vercel.app"],
+  // },
 });
 
 export type Session = typeof auth.$Infer.Session;
