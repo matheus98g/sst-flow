@@ -33,7 +33,7 @@ export function DashboardHeader({
           </svg>
         </button>
         <h1 className="font-heading text-2xl font-bold tracking-tight text-primary uppercase">
-          SST Precisão
+          SST Flow
         </h1>
       </div>
 
