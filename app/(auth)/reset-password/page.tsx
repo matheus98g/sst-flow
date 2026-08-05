@@ -8,7 +8,6 @@ import { resetPassword } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 
@@ -99,63 +98,57 @@ function ResetPasswordForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Redefinir senha</CardTitle>
-        <CardDescription>Escolha uma nova senha para sua conta.</CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="flex flex-col gap-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="password">Nova senha</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              minLength={8}
-              required
-            />
-            {password && <PasswordChecklist password={password} />}
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="confirmPassword">Confirmar nova senha</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              aria-invalid={!passwordsMatch}
-              aria-describedby="confirm-password-status"
-              minLength={8}
-              required
-            />
-            {!passwordsMatch && (
-              <ViewTransition enter="fade-in" exit="fade-out">
-                <p id="confirm-password-status" className="text-sm text-destructive">
-                  As senhas não coincidem.
-                </p>
-              </ViewTransition>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter className="mt-4 flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading || !passwordsMatch || !passwordValid}>
-            {loading ? "Salvando..." : "Redefinir senha"}
-          </Button>
-          <p className="text-center text-sm text-muted-foreground">
-            <Link href="/sign-in" className="text-primary underline-offset-4 hover:underline">
-              Voltar para o login
-            </Link>
-          </p>
-        </CardFooter>
-      </form>
-    </Card>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <div className="flex flex-col items-center gap-2 text-center">
+        <h1 className="text-2xl font-bold">Redefinir senha</h1>
+        <p className="text-balance text-muted-foreground">Escolha uma nova senha para sua conta.</p>
+      </div>
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="password">Nova senha</Label>
+        <Input
+          id="password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          minLength={8}
+          required
+        />
+        {password && <PasswordChecklist password={password} />}
+      </div>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="confirmPassword">Confirmar nova senha</Label>
+        <Input
+          id="confirmPassword"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          aria-invalid={!passwordsMatch}
+          aria-describedby="confirm-password-status"
+          minLength={8}
+          required
+        />
+        {!passwordsMatch && (
+          <ViewTransition enter="fade-in" exit="fade-out">
+            <p id="confirm-password-status" className="text-sm text-destructive">
+              As senhas não coincidem.
+            </p>
+          </ViewTransition>
+        )}
+      </div>
+      <Button type="submit" className="w-full" disabled={loading || !passwordsMatch || !passwordValid}>
+        {loading ? "Salvando..." : "Redefinir senha"}
+      </Button>
+      <p className="text-center text-sm text-muted-foreground">
+        <Link href="/sign-in" className="text-primary underline-offset-4 hover:underline">
+          Voltar para o login
+        </Link>
+      </p>
+    </form>
   );
 }
 

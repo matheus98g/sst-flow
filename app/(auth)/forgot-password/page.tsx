@@ -6,7 +6,6 @@ import { requestPasswordReset } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function ForgotPasswordPage() {
@@ -37,53 +36,47 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Verifique seu e-mail</CardTitle>
-          <CardDescription>
-            Se existe uma conta com o e-mail {email}, enviamos um link para redefinir sua senha.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <div className="flex flex-col items-center gap-2 text-center">
+        <h1 className="text-2xl font-bold">Verifique seu e-mail</h1>
+        <p className="text-balance text-muted-foreground">
+          Se existe uma conta com o e-mail {email}, enviamos um link para redefinir sua senha.
+        </p>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Esqueceu a senha?</CardTitle>
-        <CardDescription>Informe seu e-mail para receber um link de redefinição.</CardDescription>
-      </CardHeader>
-      <form onSubmit={handleSubmit}>
-        <CardContent className="flex flex-col gap-4">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="email">E-mail</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="mt-4 flex flex-col gap-4">
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Enviando..." : "Enviar link de recuperação"}
-          </Button>
-          <p className="text-center text-sm text-muted-foreground">
-            Lembrou a senha?{" "}
-            <Link href="/sign-in" className="text-primary underline-offset-4 hover:underline">
-              Entrar
-            </Link>
-          </p>
-        </CardFooter>
-      </form>
-    </Card>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <div className="flex flex-col items-center gap-2 text-center">
+        <h1 className="text-2xl font-bold">Esqueceu a senha?</h1>
+        <p className="text-balance text-muted-foreground">
+          Informe seu e-mail para receber um link de redefinição.
+        </p>
+      </div>
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="email">E-mail</Label>
+        <Input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Enviando..." : "Enviar link de recuperação"}
+      </Button>
+      <p className="text-center text-sm text-muted-foreground">
+        Lembrou a senha?{" "}
+        <Link href="/sign-in" className="text-primary underline-offset-4 hover:underline">
+          Entrar
+        </Link>
+      </p>
+    </form>
   );
 }
