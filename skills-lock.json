@@ -1,53 +1,35 @@
 {
   "version": 1,
   "skills": {
-    "clerk-backend-api": {
-      "source": "clerk/skills",
+    "better-auth-best-practices": {
+      "source": "better-auth/skills",
       "sourceType": "github",
-      "skillPath": "skills/core/clerk-backend-api/SKILL.md",
-      "computedHash": "cbcad1341a7d32fed789abe864c829f27a2858dc8ba68b92254e9beb53467148"
+      "skillPath": "better-auth/best-practices/SKILL.md",
+      "computedHash": "e8b46af23c6b1bc7aefdae3cf816368058c05e46eadb9bdca4f744b17d05a866"
     },
-    "clerk-cli": {
-      "source": "clerk/skills",
+    "better-auth-security-best-practices": {
+      "source": "better-auth/skills",
       "sourceType": "github",
-      "skillPath": "skills/core/clerk-cli/SKILL.md",
-      "computedHash": "66cd99f2120cf0f7937c43d849a3784b039d5a2c3b43377a206013c0efffb91e"
+      "skillPath": "security/SKILL.md",
+      "computedHash": "087c1094fa5f1834af4785c058dcc8c9abe4c1321b853883c76ea46c93a21cfe"
     },
-    "clerk-custom-ui": {
-      "source": "clerk/skills",
+    "create-auth": {
+      "source": "better-auth/skills",
       "sourceType": "github",
-      "skillPath": "skills/core/clerk-custom-ui/SKILL.md",
-      "computedHash": "b45ddd91c4924e8a74cb5272e769b06a5bbbde329983e7e565e6902b1cc80ded"
+      "skillPath": "better-auth/create-auth/SKILL.md",
+      "computedHash": "cf5d2c852c66269dc350dec0db8cfb07634a2310aee5be1bfd7e643dca72f22e"
     },
-    "clerk-nextjs-patterns": {
-      "source": "clerk/skills",
+    "email-and-password-best-practices": {
+      "source": "better-auth/skills",
       "sourceType": "github",
-      "skillPath": "skills/frameworks/clerk-nextjs-patterns/SKILL.md",
-      "computedHash": "cdcb9f08d567058fca7563ad8c67a4a2a2f3b9f286294e1caeb1ea5407dfebc6"
+      "skillPath": "better-auth/emailAndPassword/SKILL.md",
+      "computedHash": "7786d722fa682b3d6a99793e73a9d51b59becefa595676134a993020633e068f"
     },
-    "clerk-orgs": {
-      "source": "clerk/skills",
+    "organization-best-practices": {
+      "source": "better-auth/skills",
       "sourceType": "github",
-      "skillPath": "skills/features/clerk-orgs/SKILL.md",
-      "computedHash": "e4d0a432226e6782ea70e81f65e2f78939e4df39e42e578467972e348fe1ed64"
-    },
-    "clerk-setup": {
-      "source": "clerk/skills",
-      "sourceType": "github",
-      "skillPath": "skills/core/clerk-setup/SKILL.md",
-      "computedHash": "f2bc3ff90fe8697c99a8228eecf1e718ff396f530eac648bcab20265090dc6dc"
-    },
-    "clerk-testing": {
-      "source": "clerk/skills",
-      "sourceType": "github",
-      "skillPath": "skills/features/clerk-testing/SKILL.md",
-      "computedHash": "7502df29d90ea1f14ecbd16bf91c10717bb765eafde3d247499bc60c91d1ff91"
-    },
-    "clerk-webhooks": {
-      "source": "clerk/skills",
-      "sourceType": "github",
-      "skillPath": "skills/features/clerk-webhooks/SKILL.md",
-      "computedHash": "6acecf8a6a4a77294c87874bce189d311bce39ea28786a010d2769b922fbb8cc"
+      "skillPath": "better-auth/organization/SKILL.md",
+      "computedHash": "f8ea75816a22992c1601c21c0ee3ff8209798065072d76aec3e31eea8295af57"
     },
     "prisma-cli": {
       "source": "prisma/skills",
@@ -102,6 +84,12 @@
       "sourceType": "github",
       "skillPath": "prisma-upgrade-v7/SKILL.md",
       "computedHash": "dcc6c71adca6b22f37c5bda5ac7fd63c3bb59495596a22e06a29c7c85371558f"
+    },
+    "two-factor-authentication-best-practices": {
+      "source": "better-auth/skills",
+      "sourceType": "github",
+      "skillPath": "better-auth/twoFactor/SKILL.md",
+      "computedHash": "cfe69aad10d4d7b397fbc101630afd9361b385b5f6f83056f33f36ab3b736fcb"
     }
   }
 }
