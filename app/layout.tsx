@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   },
 };
 
+const themeInitScript = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,7 +37,11 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${geistMono.variable} ${barlowCondensed.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         {children}
       </body>
