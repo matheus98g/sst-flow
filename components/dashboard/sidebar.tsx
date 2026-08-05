@@ -83,10 +83,13 @@ export function DashboardSidebar() {
         </button>
 
         <Link
-          href="#"
+          href="/dashboard/suporte"
+          aria-current={pathname === "/dashboard/suporte" ? "page" : undefined}
           className={cn(
             navItemClass,
-            "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            pathname === "/dashboard/suporte"
+              ? "bg-secondary text-secondary-foreground"
+              : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           )}
         >
           <HelpCircleIcon />
