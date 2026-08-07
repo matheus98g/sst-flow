@@ -6,6 +6,13 @@ Guidance for Claude Code (and other AI agents) working in this repository.
 
 Sistema de Gestão de Segurança do Trabalho — see [docs/resumo-projeto.md](docs/resumo-projeto.md) for the full PRD (users/roles, functional/non-functional requirements, data model, roadmap), and [docs/progresso-implementacao.md](docs/progresso-implementacao.md) for a running checklist of what's actually been built (vs. planned in the PRD).
 
+## Idioma
+
+- Responda sempre em português do Brasil (pt-BR).
+- Commits e PRs (título e descrição) devem ser escritos em pt-BR.
+- Todo conteúdo criado fora do código-fonte (documentação, textos de UI, labels, etc.) deve ser em pt-BR.
+- Exceção: o código-fonte em si — nomes de variáveis, funções, classes, arquivos e demais identificadores — permanece em inglês (en-US), seguindo as convenções padrão de código.
+
 ## Stack
 
 - Next.js 16 (App Router)
