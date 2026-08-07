@@ -16,9 +16,21 @@ import { SignOutItem } from "@/components/dashboard/sign-out-item";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboardIcon },
-  { label: "Inspeções", href: "/dashboard/inspecoes", icon: ClipboardCheckIcon },
-  { label: "Ocorrências", href: "/dashboard/ocorrencias", icon: AlertTriangleIcon },
-  { label: "Ações Corretivas", href: "/dashboard/acoes-corretivas", icon: SquareCheckIcon },
+  {
+    label: "Inspeções",
+    href: "/dashboard/inspecoes",
+    icon: ClipboardCheckIcon,
+  },
+  {
+    label: "Ocorrências",
+    href: "/dashboard/ocorrencias",
+    icon: AlertTriangleIcon,
+  },
+  {
+    label: "Ações Corretivas",
+    href: "/dashboard/acoes-corretivas",
+    icon: SquareCheckIcon,
+  },
   { label: "Admin", href: "/dashboard/admin", icon: ShieldCheckIcon },
 ];
 
@@ -63,7 +75,7 @@ export function DashboardSidebar() {
                   navItemClass,
                   isActive
                     ? "bg-secondary text-secondary-foreground"
-                    : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                 )}
               >
                 <Icon />
@@ -75,13 +87,6 @@ export function DashboardSidebar() {
       </ul>
 
       <div className="mt-auto flex flex-col gap-2 border-t border-sidebar-border pt-3">
-        <button
-          type="button"
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary px-3 py-2 text-sm font-bold tracking-wide text-secondary-foreground uppercase transition-colors hover:bg-secondary/90"
-        >
-          Nova Inspeção
-        </button>
-
         <Link
           href="/dashboard/suporte"
           aria-current={pathname === "/dashboard/suporte" ? "page" : undefined}
@@ -89,7 +94,7 @@ export function DashboardSidebar() {
             navItemClass,
             pathname === "/dashboard/suporte"
               ? "bg-secondary text-secondary-foreground"
-              : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
           )}
         >
           <HelpCircleIcon />
@@ -99,7 +104,7 @@ export function DashboardSidebar() {
         <SignOutItem
           className={cn(
             navItemClass,
-            "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
           )}
         />
       </div>
