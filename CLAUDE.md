@@ -16,7 +16,7 @@ Sistema de Gestão de Segurança do Trabalho — see [docs/resumo-projeto.md](do
 ## Stack
 
 - Next.js 16 (App Router)
-- Prisma ORM 7 with the `@prisma/adapter-pg` driver adapter (required as of Prisma 7 — plain `new PrismaClient()` without an adapter throws), Postgres datasource hosted on Supabase, client output at `app/generated/prisma`
+- Prisma ORM 7 with the `@prisma/adapter-pg` driver adapter (required as of Prisma 7 — plain `new PrismaClient()` without an adapter throws), Postgres datasource hosted on Supabase, client output at `database/prisma/generated`
 - Better Auth for authentication, email delivery via Resend
 - shadcn/ui + Tailwind CSS 4
 - TypeScript
