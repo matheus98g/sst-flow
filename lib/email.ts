@@ -1,4 +1,6 @@
 import { Resend } from "resend";
+import { ResetPasswordEmail } from "@/emails/reset-password-email";
+import { VerificationEmail } from "@/emails/verification-email";
 
 let resend: Resend | undefined;
 
@@ -14,7 +16,7 @@ export async function sendVerificationEmail(to: string, url: string) {
     from: FROM,
     to,
     subject: "Confirme seu e-mail — SST Flow",
-    html: `<p>Confirme seu e-mail para ativar sua conta no SST Flow.</p><p><a href="${url}">Confirmar e-mail</a></p>`,
+    react: VerificationEmail({ url }),
   });
 }
 
@@ -23,6 +25,6 @@ export async function sendResetPasswordEmail(to: string, url: string) {
     from: FROM,
     to,
     subject: "Redefinir senha — SST Flow",
-    html: `<p>Recebemos um pedido para redefinir sua senha.</p><p><a href="${url}">Redefinir senha</a></p><p>Se você não solicitou isso, ignore este e-mail.</p>`,
+    react: ResetPasswordEmail({ url }),
   });
 }
