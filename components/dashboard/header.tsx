@@ -14,7 +14,8 @@ export function DashboardHeader({
       <div className="flex items-center gap-3">
         <button
           type="button"
-          className="rounded-lg p-2 text-foreground hover:bg-muted md:hidden"
+          disabled
+          className="rounded-lg p-2 text-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50 md:hidden"
           aria-label="Abrir menu"
         >
           <svg
@@ -49,14 +50,16 @@ export function DashboardHeader({
 
         <button
           type="button"
-          className="flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted"
+          disabled
+          className="flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
           aria-label="Notificações"
         >
           <BellIcon className="size-5" />
         </button>
         <button
           type="button"
-          className="flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted"
+          disabled
+          className="flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
           aria-label="Configurações"
         >
           <SettingsIcon className="size-5" />
