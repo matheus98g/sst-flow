@@ -6,12 +6,14 @@
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "email:dev": "email dev --dir emails"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
+    "@react-email/components": "^1.0.12",
     "better-auth": "^1.6.25",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -35,6 +37,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "prisma": "^7.9.1",
+    "react-email": "^6.9.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
