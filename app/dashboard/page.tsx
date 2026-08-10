@@ -87,7 +87,8 @@ export default function DashboardPage() {
             </CardTitle>
             <button
               type="button"
-              className="text-xs font-bold tracking-wide text-primary-foreground/70 uppercase hover:text-primary-foreground"
+              disabled
+              className="text-xs font-bold tracking-wide text-primary-foreground/70 uppercase hover:text-primary-foreground disabled:pointer-events-none disabled:opacity-50"
             >
               Ver todas
             </button>

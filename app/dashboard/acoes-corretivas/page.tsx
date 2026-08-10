@@ -172,11 +172,11 @@ export default function AcoesCorretivasPage() {
           />
 
           <div className="flex gap-2">
-            <Button size="lg" className="h-10">
+            <Button size="lg" className="h-10" disabled>
               <FilterIcon />
               Aplicar Filtros
             </Button>
-            <Button variant="outline" size="lg" className="h-10">
+            <Button variant="outline" size="lg" className="h-10" disabled>
               Limpar
             </Button>
           </div>
@@ -261,11 +261,13 @@ export default function AcoesCorretivasPage() {
               </CardContent>
 
               <CardFooter className="justify-end gap-2 bg-muted/50">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" disabled>
                   Ver Detalhes
                 </Button>
                 {acao.status !== "encerrada" && (
-                  <Button size="sm">Atualizar</Button>
+                  <Button size="sm" disabled>
+                    Atualizar
+                  </Button>
                 )}
               </CardFooter>
             </Card>

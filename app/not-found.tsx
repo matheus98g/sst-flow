@@ -52,7 +52,7 @@ export default function NotFound() {
             Voltar ao Dashboard
           </Button>
           <Button
-            render={<Link href="/suporte" />}
+            render={<Link href="/dashboard/suporte" />}
             nativeButton={false}
             variant="outline"
             size="lg"
