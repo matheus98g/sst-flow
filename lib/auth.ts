@@ -4,7 +4,18 @@ import { nextCookies } from "better-auth/next-js";
 import { prisma } from "@/lib/prisma";
 import { sendResetPasswordEmail, sendVerificationEmail } from "@/lib/email";
 
+function resolveBaseURL() {
+  if (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return process.env.BETTER_AUTH_URL;
+}
+
 export const auth = betterAuth({
+  baseURL: resolveBaseURL(),
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -23,9 +34,6 @@ export const auth = betterAuth({
     },
   },
   plugins: [nextCookies()],
-  // baseURL: {
-  //   allowedHosts: ["*.vercel.app"],
-  // },
 });
 
 export type Session = typeof auth.$Infer.Session;
