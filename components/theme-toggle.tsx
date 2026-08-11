@@ -1,55 +1,49 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { useTheme } from "next-themes";
+import { CheckIcon, MonitorIcon, MoonIcon, SunIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { setThemePreference, type Theme } from "@/lib/preferences";
 
-type Listener = () => void;
-const listeners = new Set<Listener>();
-
-function subscribe(listener: Listener) {
-  listeners.add(listener);
-  return () => listeners.delete(listener);
-}
-
-function getSnapshot() {
-  return document.documentElement.classList.contains("dark");
-}
-
-function getServerSnapshot() {
-  return false;
-}
-
-function setTheme(isDark: boolean) {
-  document.documentElement.classList.toggle("dark", isDark);
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-  for (const listener of listeners) listener();
-}
+const options: { value: Theme; label: string; icon: typeof SunIcon }[] = [
+  { value: "light", label: "Claro", icon: SunIcon },
+  { value: "dark", label: "Escuro", icon: MoonIcon },
+  { value: "system", label: "Sistema", icon: MonitorIcon },
+];
 
 export function ThemeToggle() {
-  const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { theme, setTheme } = useTheme();
+
+  function handleSelect(value: Theme) {
+    setTheme(value);
+    void setThemePreference(value);
+  }
+
+  const current = options.find((option) => option.value === theme) ?? options[2];
+  const CurrentIcon = current.icon;
 
   return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={isDark}
-      aria-label="Alternar modo escuro"
-      onClick={() => setTheme(!isDark)}
-      suppressHydrationWarning
-      className="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border border-border bg-muted transition-colors"
-    >
-      <span
-        suppressHydrationWarning
-        className={`inline-flex size-4 items-center justify-center rounded-full bg-card shadow transition-transform ${
-          isDark ? "translate-x-6" : "translate-x-1"
-        }`}
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        aria-label="Alternar tema"
+        className="flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted"
       >
-        {isDark ? (
-          <MoonIcon className="size-3 text-primary" />
-        ) : (
-          <SunIcon className="size-3 text-warning" />
-        )}
-      </span>
-    </button>
+        <CurrentIcon className="size-5" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        {options.map(({ value, label, icon: Icon }) => (
+          <DropdownMenuItem key={value} onClick={() => handleSelect(value)}>
+            <Icon className="size-4" />
+            <span className="flex-1">{label}</span>
+            {theme === value && <CheckIcon className="size-4" />}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
