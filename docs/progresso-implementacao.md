@@ -23,7 +23,7 @@ Checklist do que já foi feito no projeto, fora do PRD (ver [resumo-projeto.md](
 
 ### Pendências conhecidas
 
-- [x ] Confirmar que `BETTER_AUTH_URL` está de fato preenchido em `.env` (warning "Base URL is not set" ainda aparece nos logs — não quebra em dev, mas deve ser corrigido antes de produção)
+- [x] Corrigido warning "Base URL is not set" do Better Auth em produção — `lib/auth.ts` agora deriva `baseURL` das variáveis de sistema da Vercel (`VERCEL_PROJECT_PRODUCTION_URL` em produção, `VERCEL_URL` em previews, com fallback para `BETTER_AUTH_URL` em dev local), cobrindo também os preview deployments, que têm URL dinâmica
 - [ ] Campos `role` (papel) e `setor` no modelo de usuário — adiado deliberadamente; schema do Better Auth está no formato padrão (sem esses campos)
 - [ ] CRUD de administração de usuários e setores (RF-17)
 - [ ] Autenticação social/2FA/organizations — fora de escopo por enquanto
