@@ -7,7 +7,8 @@
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "eslint",
-    "email:dev": "email dev --dir emails"
+    "email:dev": "email dev --dir emails",
+    "db:seed": "tsx database/prisma/seed.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -42,6 +43,7 @@
     "prisma": "^7.9.1",
     "react-email": "^6.9.2",
     "tailwindcss": "^4",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }
