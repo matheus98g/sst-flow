@@ -19,12 +19,17 @@ model User {
   emailVerified Boolean   @default(false)
   image         String?
   preferences   Json      @default("{}")
+  companyId     String?
+  company       Company?  @relation(fields: [companyId], references: [id], onDelete: SetNull)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
 
+  checklistTemplates ChecklistTemplate[]
+
   @@unique([email])
+  @@index([companyId])
   @@map("user")
 }
 
@@ -74,4 +79,105 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+enum Criticality {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AnswerType {
+  COMPLIANCE
+}
+
+enum RegulatoryStandard {
+  NR_01
+  NR_05
+  NR_06
+  NR_07
+  NR_09
+  NR_10
+  NR_11
+  NR_12
+  NR_13
+  NR_17
+  NR_18
+  NR_20
+  NR_23
+  NR_26
+  NR_33
+  NR_35
+  OTHER
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users              User[]
+  sectors            Sector[]
+  checklistTemplates ChecklistTemplate[]
+
+  @@map("company")
+}
+
+model Sector {
+  id        String   @id @default(cuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  checklistTemplates ChecklistTemplate[]
+
+  @@unique([companyId, name])
+  @@index([companyId])
+  @@map("sector")
+}
+
+model ChecklistTemplate {
+  id        String  @id @default(cuid())
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title     String
+
+  standard RegulatoryStandard?
+  sectorId String?
+  sector   Sector?             @relation(fields: [sectorId], references: [id], onDelete: SetNull)
+
+  createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id])
+
+  archivedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  items ChecklistTemplateItem[]
+
+  @@index([companyId, archivedAt])
+  @@index([sectorId])
+  @@map("checklist_template")
+}
+
+model ChecklistTemplateItem {
+  id         String            @id @default(cuid())
+  templateId String
+  template   ChecklistTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  position    Int
+  text        String
+  section     String?
+  criticality Criticality @default(MEDIUM)
+  answerType  AnswerType  @default(COMPLIANCE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([templateId, position])
+  @@index([templateId])
+  @@map("checklist_template_item")
 }
