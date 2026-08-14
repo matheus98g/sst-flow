@@ -3,13 +3,7 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-
-export class NoActiveCompanyError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "NoActiveCompanyError";
-  }
-}
+import { NoActiveCompanyError } from "@/lib/company-errors";
 
 /**
  * Resolve a empresa ativa da sessão. Usa `user.companyId` quando presente;
