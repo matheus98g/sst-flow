@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Spinner } from "@/components/ui/spinner";
 
 function SignInForm() {
   const router = useRouter();
@@ -88,7 +89,13 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <Spinner className="size-8" />
+        </div>
+      }
+    >
       <SignInForm />
     </Suspense>
   );
