@@ -3,6 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { ListPlusIcon, PlusIcon, SaveIcon } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,13 +89,20 @@ export function ChecklistForm({ sectors, initialValues, onSubmit, submitLabel }:
     setItems((current) => [...current, createEmptyItem()]);
   }
 
-  function moveItem(index: number, direction: -1 | 1) {
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
     setItems((current) => {
-      const target = index + direction;
-      if (target < 0 || target >= current.length) return current;
-      const next = [...current];
-      [next[index], next[target]] = [next[target], next[index]];
-      return next;
+      const oldIndex = current.findIndex((item) => item.clientId === active.id);
+      const newIndex = current.findIndex((item) => item.clientId === over.id);
+      if (oldIndex === -1 || newIndex === -1) return current;
+      return arrayMove(current, oldIndex, newIndex);
     });
   }
 
@@ -212,21 +234,25 @@ export function ChecklistForm({ sectors, initialValues, onSubmit, submitLabel }:
           </Alert>
         )}
 
-        <ul className="flex flex-col gap-4">
-          {items.map((item, index) => (
-            <ChecklistItemRow
-              key={item.clientId}
-              item={item}
-              index={index}
-              total={items.length}
-              errors={fieldErrors.itemErrors?.[String(index)]}
-              onChange={(next) => updateItem(item.clientId, next)}
-              onRemove={() => removeItem(item.clientId)}
-              onMoveUp={() => moveItem(index, -1)}
-              onMoveDown={() => moveItem(index, 1)}
-            />
-          ))}
-        </ul>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext
+            items={items.map((item) => item.clientId)}
+            strategy={verticalListSortingStrategy}
+          >
+            <ul className="flex flex-col gap-4">
+              {items.map((item, index) => (
+                <ChecklistItemRow
+                  key={item.clientId}
+                  item={item}
+                  index={index}
+                  errors={fieldErrors.itemErrors?.[String(index)]}
+                  onChange={(next) => updateItem(item.clientId, next)}
+                  onRemove={() => removeItem(item.clientId)}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
 
         <button
           type="button"

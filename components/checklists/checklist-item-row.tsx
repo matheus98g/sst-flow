@@ -1,6 +1,8 @@
 "use client";
 
-import { ArrowDownIcon, ArrowUpIcon, Trash2Icon } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVerticalIcon, Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { CRITICALITY_OPTIONS } from "@/lib/checklists/constants";
 import type { Criticality } from "@/database/prisma/generated/client";
 
@@ -24,54 +27,44 @@ export type DraftItem = {
 type ChecklistItemRowProps = {
   item: DraftItem;
   index: number;
-  total: number;
   errors?: string[];
   onChange: (item: DraftItem) => void;
   onRemove: () => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
 };
 
-export function ChecklistItemRow({
-  item,
-  index,
-  total,
-  errors,
-  onChange,
-  onRemove,
-  onMoveUp,
-  onMoveDown,
-}: ChecklistItemRowProps) {
+export function ChecklistItemRow({ item, index, errors, onChange, onRemove }: ChecklistItemRowProps) {
   const hasError = Boolean(errors?.length);
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: item.clientId,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   return (
-    <li className="relative flex flex-col gap-4 rounded-lg border border-border bg-card p-4 md:flex-row">
+    <li
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "relative flex flex-col gap-4 rounded-lg border border-border bg-card p-4 md:flex-row",
+        isDragging && "z-10 opacity-70 shadow-lg",
+      )}
+    >
       <span className="absolute inset-y-0 left-0 w-1 rounded-l-lg bg-muted" aria-hidden />
 
       <div className="flex flex-1 flex-col gap-2 pl-2">
-        <div className="flex items-center gap-2">
-          <div className="flex flex-col">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-xs"
-              aria-label={`Mover pergunta ${index + 1} para cima`}
-              disabled={index === 0}
-              onClick={onMoveUp}
-            >
-              <ArrowUpIcon />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-xs"
-              aria-label={`Mover pergunta ${index + 1} para baixo`}
-              disabled={index === total - 1}
-              onClick={onMoveDown}
-            >
-              <ArrowDownIcon />
-            </Button>
-          </div>
+        <div className="mb-1 flex items-center gap-2">
+          <button
+            type="button"
+            className="cursor-grab touch-none rounded p-1 text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:cursor-grabbing"
+            aria-label={`Reordenar pergunta ${index + 1}`}
+            {...attributes}
+            {...listeners}
+          >
+            <GripVerticalIcon className="size-5" />
+          </button>
           <span className="text-xs font-bold tracking-wide text-muted-foreground uppercase">
             {String(index + 1).padStart(2, "0")}
           </span>
@@ -98,7 +91,7 @@ export function ChecklistItemRow({
         <Label>Criticidade</Label>
         <Select
           value={item.criticality}
-          onValueChange={(value) => onChange({ ...item, criticality: value as Criticality })}
+          onValueChange={(value) => onChange({ ...item, criticality: (value ?? "MEDIUM") as Criticality })}
         >
           <SelectTrigger className="w-full">
             <SelectValue />
