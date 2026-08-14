@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { CRITICALITY_OPTIONS } from "@/lib/checklists/constants";
+import { CRITICALITY_LABELS, CRITICALITY_OPTIONS } from "@/lib/checklists/constants";
 import type { Criticality } from "@/database/prisma/generated/client";
 
 export type DraftItem = {
@@ -94,7 +94,7 @@ export function ChecklistItemRow({ item, index, errors, onChange, onRemove }: Ch
           onValueChange={(value) => onChange({ ...item, criticality: (value ?? "MEDIUM") as Criticality })}
         >
           <SelectTrigger className="w-full">
-            <SelectValue />
+            <SelectValue>{(value: Criticality) => CRITICALITY_LABELS[value]}</SelectValue>
           </SelectTrigger>
           <SelectContent>
             {CRITICALITY_OPTIONS.map((option) => (

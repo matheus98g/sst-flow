@@ -30,6 +30,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
 import { ChecklistItemRow, type DraftItem } from "@/components/checklists/checklist-item-row";
 import { REGULATORY_STANDARD_OPTIONS } from "@/lib/checklists/constants";
 import { checklistDraftSchema, type ChecklistDraftFieldErrors } from "@/lib/checklists/schema";
@@ -37,6 +45,11 @@ import type { ChecklistActionResult } from "@/app/dashboard/inspecoes/checklists
 import type { RegulatoryStandard } from "@/database/prisma/generated/client";
 
 const NONE = "none";
+
+const standardComboboxItems = [
+  { value: NONE, label: "Nenhuma" },
+  ...REGULATORY_STANDARD_OPTIONS.map((option) => ({ value: option.value, label: option.label })),
+];
 
 type Sector = { id: string; name: string };
 
@@ -180,26 +193,36 @@ export function ChecklistForm({ sectors, initialValues, onSubmit, submitLabel }:
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="nr-context">Contexto (NR)</Label>
-            <Select value={standard} onValueChange={(value) => setStandard(value ?? NONE)}>
-              <SelectTrigger id="nr-context" className="w-full">
-                <SelectValue placeholder="Selecione a Norma" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value={NONE}>Nenhuma</SelectItem>
-                {REGULATORY_STANDARD_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Combobox
+              items={standardComboboxItems}
+              value={standard}
+              onValueChange={(value) => setStandard(value ?? NONE)}
+            >
+              <ComboboxInput id="nr-context" placeholder="Buscar norma..." />
+              <ComboboxContent className="min-w-[28rem] max-w-[min(92vw,32rem)]">
+                <ComboboxEmpty>Nenhuma norma encontrada.</ComboboxEmpty>
+                <ComboboxList>
+                  {(item: { value: string; label: string }) => (
+                    <ComboboxItem key={item.value} value={item.value}>
+                      {item.label}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
           </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="sector">Setor / Categoria</Label>
             <Select value={sectorId} onValueChange={(value) => setSectorId(value ?? NONE)}>
               <SelectTrigger id="sector" className="w-full">
-                <SelectValue placeholder="Selecione o setor" />
+                <SelectValue placeholder="Selecione o setor">
+                  {(value: string) =>
+                    value === NONE || !value
+                      ? "Nenhum"
+                      : (sectors.find((sector) => sector.id === value)?.name ?? value)
+                  }
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value={NONE}>Nenhum</SelectItem>
