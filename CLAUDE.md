@@ -41,3 +41,11 @@ When implementing or touching auth:
 - Auth pages live under `app/(auth)/` (`sign-in`, `sign-up`, `forgot-password`, `reset-password`, `verify-email`), built with shadcn/ui components from `components/ui/`.
 - Env vars: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATABASE_URL` (Supabase pooler URL), `DIRECT_URL` (Supabase direct connection, for migrations), `RESEND_API_KEY`, `RESEND_FROM_EMAIL` — see `.env.example`.
 - The PRD's roles (engenheiro de segurança, técnico de segurança, colaborador operacional) and setor-based visibility (RF-17, RF-18, §2) should map onto Better Auth's user/session model plus the Prisma schema — not onto a third-party provider's org/role primitives. **Not implemented yet** — the current `User` model is Better Auth's stock schema with no `role`/`setor` fields; see [docs/progresso-implementacao.md](docs/progresso-implementacao.md) for what's pending.
+
+## Multi-tenancy (Company)
+
+`User.companyId` is nullable and intentionally **not** declared in Better Auth's `additionalFields` — it's not part of signup or the session payload, only populated by seed/admin. Every read/write outside of auth itself must resolve the active company via `lib/company.ts` (`getActiveCompanyId()`), never accept a `companyId` from the client. See [SPEC.md](SPEC.md) for the full rationale (RNF-05).
+
+## Checklists module (RF-01, templates only)
+
+Templates live at `ChecklistTemplate` / `ChecklistTemplateItem` (see [SPEC.md](SPEC.md) and [docs/progresso-implementacao.md](docs/progresso-implementacao.md)). **Contract for the future inspection-execution module:** templates are not versioned. When an inspection starts from a template, it must copy the template's items into the inspection (snapshot), never reference them by id — otherwise editing a template later would silently rewrite the history of already-completed inspections (RF-05).
