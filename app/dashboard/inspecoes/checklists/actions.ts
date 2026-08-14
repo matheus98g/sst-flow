@@ -104,3 +104,14 @@ export async function archiveChecklistTemplate(id: string): Promise<{ ok: boolea
 
   return { ok: result.count > 0 };
 }
+
+export async function restoreChecklistTemplate(id: string): Promise<{ ok: boolean }> {
+  const companyId = await getActiveCompanyId();
+
+  const result = await prisma.checklistTemplate.updateMany({
+    where: { id, companyId, archivedAt: { not: null } },
+    data: { archivedAt: null },
+  });
+
+  return { ok: result.count > 0 };
+}
