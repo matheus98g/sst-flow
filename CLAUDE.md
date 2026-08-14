@@ -25,6 +25,12 @@ Sistema de Gestão de Segurança do Trabalho — see [docs/resumo-projeto.md](do
 
 Postgres is hosted on **Supabase**. Prisma connects to it via `DATABASE_URL` (see `.env.example`) — use Supabase's connection pooler URL for the app runtime and the direct connection for migrations if a separate `DIRECT_URL` is configured. Schema changes go through Prisma Migrate (`prisma migrate dev` / `prisma migrate deploy`), not the Supabase dashboard's table editor, so the Prisma schema stays the source of truth.
 
+## Deploy
+
+O deploy é feito na **Vercel**. Todo push em uma branch com PR aberta dispara automaticamente um deploy de preview na Vercel — é lá que as features devem ser testadas, não localmente.
+
+- **Nunca** use ferramentas de devtools/browser (Chrome DevTools, Claude Browser, etc.) para testar a aplicação localmente, a menos que isso seja explicitamente pedido pelo usuário.
+
 ## Authentication
 
 This project uses **Better Auth**. Better Auth is self-hosted: sessions and user records live in this project's own Supabase Postgres database via the Prisma adapter, not in a third-party auth provider. This is a deliberate choice to keep full control over session and user data (querying, revoking, and joining users/sessions directly against project data — e.g. `setor`/`empresa_id` scoping described in the PRD).
