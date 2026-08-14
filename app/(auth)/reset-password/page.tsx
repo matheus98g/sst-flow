@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PASSWORD_RULES, PasswordChecklist } from "@/components/password-checklist";
+import { Spinner } from "@/components/ui/spinner";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -123,7 +124,13 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="flex min-h-[50vh] items-center justify-center">
+          <Spinner className="size-8" />
+        </div>
+      }
+    >
       <ResetPasswordForm />
     </Suspense>
   );
